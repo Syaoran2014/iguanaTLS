@@ -1,0 +1,14 @@
+.{
+    .name = "iguanaTLS",
+    .version = "0.1.7",
+    .minimum_zig_version = "0.12.0",
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        // For example...
+        "LICENSE",
+        //"README.md",
+    },
+}
