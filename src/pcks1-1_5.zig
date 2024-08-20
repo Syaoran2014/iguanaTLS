@@ -187,6 +187,8 @@ pub fn verify_signature(
         if (c != 0xff) return false;
     }
 
+    std.debug.print("Check five", .{});
+
     return true;
 }
 

@@ -6,7 +6,6 @@ const Sha384 = std.crypto.hash.sha2.Sha384;
 const Sha512 = std.crypto.hash.sha2.Sha512;
 const Sha256 = std.crypto.hash.sha2.Sha256;
 const Hmac256 = std.crypto.auth.hmac.sha2.HmacSha256;
-const files = @import("self/files");
 
 pub const asn1 = @import("asn1.zig");
 pub const x509 = @import("x509.zig");
@@ -1965,7 +1964,7 @@ test "HTTPS request on wikipedia main page" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "en.wikipedia.org", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertHighAssuranceEVRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertHighAssuranceEVRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
@@ -2018,7 +2017,7 @@ test "HTTPS request on wikipedia alternate name" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "en.m.wikipedia.org", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertHighAssuranceEVRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertHighAssuranceEVRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
@@ -2081,7 +2080,7 @@ test "Connecting to expired.badssl.com returns an error" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "expired.badssl.com", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertGlobalRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertGlobalRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
@@ -2105,7 +2104,7 @@ test "Connecting to wrong.host.badssl.com returns an error" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "wrong.host.badssl.com", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertGlobalRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertGlobalRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
@@ -2129,7 +2128,7 @@ test "Connecting to self-signed.badssl.com returns an error" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "self-signed.badssl.com", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertGlobalRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertGlobalRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
@@ -2153,13 +2152,13 @@ test "Connecting to client.badssl.com with a client certificate" {
     const sock = try std.net.tcpConnectToHost(std.testing.allocator, "client.badssl.com", 443);
     defer sock.close();
 
-    var fbs = std.io.fixedBufferStream(files.@"/DigiCertGlobalRootCA.crt.pem");
+    var fbs = std.io.fixedBufferStream(@embedFile("./certs/DigiCertGlobalRootCA.crt.pem"));
     var trusted_chain = try x509.CertificateChain.from_pem(std.testing.allocator, fbs.reader());
     defer trusted_chain.deinit();
 
     const rand = std.crypto.random;
 
-    var fbs2 = std.io.fixedBufferStream(files.@"/badssl.com-client.pem");
+    var fbs2 = std.io.fixedBufferStream(@embedFile("./certs/badssl.com-client.pem"));
     var client_cert = try x509.ClientCertificateChain.from_pem(std.testing.allocator, fbs2.reader());
     defer client_cert.deinit(std.testing.allocator);
 

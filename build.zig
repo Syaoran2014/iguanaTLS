@@ -21,9 +21,9 @@ pub fn build(b: *Builder) void {
         .root_source_file = b.path("src/main.zig"),
         .optimize = mode,
     });
-    main_tests.root_module.addImport("self/files", b.addModule("self/files", .{
-        .root_source_file = b.path("files.zig"),
-    }));
+    //main_tests.root_module.addImport("self/files", b.addModule("self/files", .{
+    //    .root_source_file = b.path("files.zig"),
+    //}));
 
     const test_step = b.step("test", "Run library tests");
     const test_run = b.addRunArtifact(main_tests);

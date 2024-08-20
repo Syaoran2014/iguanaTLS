@@ -4,3 +4,4 @@ deps.zig
 gyro.lock
 zigmod.lock
 files.zig
+/src/certs
